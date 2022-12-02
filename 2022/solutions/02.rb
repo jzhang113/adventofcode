@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require_relative './base_solution'
 require_relative '../input'
 
-class Solution
+class Solution < BaseSolution
   include Input
 
   def data
@@ -41,6 +42,4 @@ class Solution
   end
 end
 
-soln = Solution.new
-puts soln.part1
-puts soln.part2
+Solution.new.run
