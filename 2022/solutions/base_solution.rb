@@ -9,6 +9,9 @@ class BaseSolution
 
   EXCLUDED_INSTANCE_VARS = ['input']
 
+  # Override to implement behavior used by both parts of the solution
+  def before_block; end
+
   def part1
     raise 'Implement your solution to part one of the problem'
   end
@@ -20,6 +23,9 @@ class BaseSolution
   def run
     day_num = File.basename($PROGRAM_NAME, '.rb').to_i
     puts "Running solution for day #{day_num}"
+
+    before_block
+
     puts "Part 1: #{part1}"
     puts "Part 2: #{part2}"
 
