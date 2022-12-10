@@ -11,23 +11,18 @@ class Solution < BaseSolution
   end
 
   def part1
-    @register = Array.new(240, 1)
+    @register = [1]
     cycle = 0
-    line = 0
 
-    while cycle < 240
-      op, num = input[line].split
-      num = num.to_i if num.present?
-      line += 1
-
-      case op
-      when 'noop'
-        @register[cycle + 1] = @register[cycle]
+    input.each do |line|
+      case line.split
+      in ['noop']
+        @register << @register[cycle]
         cycle += 1
-      when 'addx'
-        new_val = @register[cycle] + num
-        @register[cycle + 1] = @register[cycle]
-        @register[cycle + 2] = new_val
+      in ['addx', num]
+        new_val = @register[cycle] + num.to_i
+        @register << @register[cycle]
+        @register << new_val
         cycle += 2
       end
     end
