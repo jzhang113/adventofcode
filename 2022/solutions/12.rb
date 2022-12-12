@@ -2,6 +2,7 @@
 
 require_relative './base_solution'
 require_relative '../input'
+require_relative '../heap'
 
 class Tile
   attr_accessor :value, :exits, :dist, :prev
@@ -58,23 +59,6 @@ class Solution < BaseSolution
     x < @cols && x >= 0 && y < @rows && y >= 0 && map[y][x].value >= current - 1
   end
 
-  # Insert element into ASC sorted array.
-  def heap_push(arr, x)
-    idx = arr.bsearch_index { |y| (y[0] <=> x[0]) >= 0 } || arr.size
-    arr.insert(idx, x)
-  end
-
-  # Remove element from ASC sorted array if the element is present.
-  def heap_pop(arr, x)
-    idx = arr.bsearch_index { |y| (y[0] <=> x[0]) >= 0 }
-    arr.delete_at(idx) if idx && arr[idx][0] == x[0]
-  end
-
-  def heap_pop_val(arr, val)
-    idx = arr.index { |y| y[1] == val }
-    arr.delete_at(idx) if idx && arr[idx][1] == val
-  end
-
   def to_idx(x, y)
     y * @cols + x
   end
@@ -86,31 +70,27 @@ class Solution < BaseSolution
   end
 
   def dijkstra(map)
-    queue = []
+    queue = MinHeap.new
 
     map.each_with_index do |row, y|
       row.each_with_index do |cell, x|
-        heap_push(queue, [cell.dist, to_idx(x, y)])
+        queue.insert(cell.dist, to_idx(x, y))
       end
     end
 
     until queue.empty? do
-      top = queue.shift
-      t_x, t_y = to_rc(top[1])
+      prev_cost, prev_idx = queue.extract
+      px, py = to_rc(prev_idx)
 
-      map[t_y][t_x].exits.each do |dx, dy|
-        new_idx = to_idx(t_x + dx, t_y + dy)
-        elem = heap_pop_val(queue, new_idx)
-        next if elem.nil?
+      map[py][px].exits.each do |dx, dy|
+        new_idx = to_idx(px + dx, py + dy)
 
-        alt = map[t_y][t_x].dist + 1
-        if alt < map[t_y + dy][t_x + dx].dist
-          map[t_y + dy][t_x + dx].dist = alt
-          map[t_y + dy][t_x + dx].prev = top[1]
-          elem[0] = alt
+        cost = prev_cost + 1
+        if cost < map[py + dy][px + dx].dist
+          map[py + dy][px + dx].dist = cost
+          map[py + dy][px + dx].prev = prev_idx
+          queue.decrease_key(new_idx, cost)
         end
-
-        heap_push(queue, elem)
       end
     end
   end
