@@ -42,4 +42,8 @@ class BaseSolution
 
     nil
   end
+
+  def extract_num(str)
+    str.scan(/-?\d+/).map(&:to_i)
+  end
 end
