@@ -4,24 +4,25 @@ require 'open-uri'
 
 # Helpers for getting puzzle input and making it available as `input`
 module Input
-  BASE_DIR = 'input'
+  BASE_DIR = '../input'
   USER_AGENT = 'custom downloader - jzhang113 - jiahuaz01@gmail.com'
-  AOC_SESSION = 'session=53616c7465645f5f58638e156f00e6bb420d65f55bdd77bc30f74a9fd9297d5e23fc4b26518e15917055a3179f2d72669ae1f44e6e4d02012b269bcb2694a35a'
+  AOC_SESSION = ENV['AOC_SESSION']
 
   def self.included(obj)
     path, = caller[0].partition(':')
     day_num = File.basename(path, '.rb').to_i
+    year = File.realpath(File.dirname(path)).split('/').last
 
     obj.class_eval <<-RUBY, __FILE__, __LINE__ + 1
       def input
-        @input ||= #{get_input(day_num)}
+        @input ||= #{get_input(day_num, year)}
       end
     RUBY
   end
 
   module_function
 
-  def get_input(day, year: 2023, delimiter: "\n")
+  def get_input(day, year, delimiter: "\n")
     input = load_and_read(day, year)
 
     return input if delimiter.nil?
@@ -42,6 +43,8 @@ module Input
       File.open(input_file_path, 'w+') do |file|
         file.write(blob.read)
         puts "Wrote file #{input_file_path}"
+
+        file.rewind
         return file.read
       end
     end

@@ -7,7 +7,7 @@ require 'byebug'
 class BaseSolution
   # include Input in the subclass to make available an `input` accessor to the data
 
-  EXCLUDED_INSTANCE_VARS = ['input']
+  EXCLUDED_INSTANCE_VARS = ['input'].freeze
 
   # Override to implement behavior used by both parts of the solution
   def before_block; end
@@ -45,5 +45,11 @@ class BaseSolution
 
   def extract_num(str)
     str.scan(/-?\d+/).map(&:to_i)
+  end
+end
+
+class String
+  def is_i?
+    /\A[-+]?\d+\z/ === self
   end
 end
