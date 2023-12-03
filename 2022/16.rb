@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './base_solution'
-require_relative '../input'
+require_relative '../lib/base_solution'
+require_relative '../lib/input'
 
 class Solution < BaseSolution
   include Input
@@ -104,7 +104,7 @@ class Solution < BaseSolution
 
     @memo = Array.new(50) { {} }
 
-    dfs 'PL', @sig_graph, [['PL', 0]], Set.new do |nodes|
+    dfs 'PL', @sig_graph, ['PL', 0], Set.new do |nodes|
       @count += 1
       # p nodes
       flow = 0
@@ -125,7 +125,7 @@ class Solution < BaseSolution
       flow
     end
 
-    max_flow
+    @memo[0]
   end
 
   def part2

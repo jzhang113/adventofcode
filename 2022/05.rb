@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './base_solution'
-require_relative '../input'
+require_relative '../lib/base_solution'
+require_relative '../lib/input'
 
 class Solution < BaseSolution
   include Input
