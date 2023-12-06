@@ -2,51 +2,7 @@
 
 require_relative '../lib/base_solution'
 require_relative '../lib/input'
-
-# Helper for treating multiple ranges as a single, possibly disjoint range
-class MultiRange
-  attr_accessor :ranges
-
-  def initialize(ranges)
-    @ranges = ranges.sort_by(&:begin)
-  end
-
-  def cover?(value)
-    @ranges.any? { |r| r.cover?(value) }
-  end
-
-  def count
-    @ranges.sum(&:count)
-  end
-
-  # Merge all ranges, assuming that the ranges are sorted by their begin values
-  # Returns a new MultiRange object
-  def merge_overlapping
-    current = @ranges.first
-    new_ranges = []
-
-    @ranges.drop(1).each do |range|
-      new_range = merge(current, range)
-
-      if new_range.nil?
-        new_ranges << current
-        current = range
-      else
-        current = new_range
-      end
-    end
-
-    new_ranges << current
-    MultiRange.new(new_ranges)
-  end
-
-  # Merge two ranges, returns nil if they are disjoint
-  def merge(range1, range2)
-    return nil if range1.end < range2.begin || range2.end < range1.begin
-
-    [range1.begin, range2.begin].min..[range1.end, range2.end].max
-  end
-end
+require_relative '../lib/multirange'
 
 class Solution < BaseSolution
   include Input

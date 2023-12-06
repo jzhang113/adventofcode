@@ -53,3 +53,22 @@ class String
     /\A[-+]?\d+\z/ === self
   end
 end
+
+class Range
+  # Find the common elements of two ranges, returns nil if they are disjoint
+  def intersection(other)
+    return nil if self.end < other.begin || other.end < self.begin
+
+    [self.begin, other.begin].max..[self.end, other.end].min
+  end
+
+  # Merge two ranges, returns nil if they are disjoint
+  def union(other)
+    return nil if self.end < other.begin || other.end < self.begin
+
+    [self.begin, other.begin].min..[self.end, other.end].max
+  end
+
+  alias & :intersection
+  alias + :union
+end
