@@ -6,7 +6,7 @@ require 'open-uri'
 module Input
   BASE_DIR = '../input'
   USER_AGENT = 'custom downloader - jzhang113 - jiahuaz01@gmail.com'
-  AOC_SESSION = ENV['AOC_SESSION']
+  AOC_SESSION = ENV.fetch('AOC_SESSION')
 
   def self.included(obj)
     path, = caller[0].partition(':')
@@ -39,7 +39,7 @@ module Input
       return File.read(input_file_path)
     end
 
-    URI.open(download_url, 'User-Agent' => USER_AGENT, 'Cookie' => AOC_SESSION) do |blob|
+    URI.parse(download_url).open('User-Agent' => USER_AGENT, 'Cookie' => AOC_SESSION) do |blob|
       File.open(input_file_path, 'w+') do |file|
         file.write(blob.read)
         puts "Wrote file #{input_file_path}"

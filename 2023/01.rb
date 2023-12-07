@@ -44,7 +44,7 @@ class Solution < BaseSolution
     line_nums = []
 
     input.each do |line|
-      nums = extract_num(line)
+      nums = line.extract_nums
       first_digit = nums.first.digits.last
       last_digit = nums.last.digits.first
       line_nums << 10 * first_digit + last_digit

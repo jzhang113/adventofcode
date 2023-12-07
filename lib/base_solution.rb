@@ -26,10 +26,10 @@ class BaseSolution
 
     before_block
 
+    dump
+
     puts "Part 1: #{part1}"
     puts "Part 2: #{part2}"
-
-    dump
   end
 
   def dump
@@ -42,15 +42,15 @@ class BaseSolution
 
     nil
   end
-
-  def extract_num(str)
-    str.scan(/-?\d+/).map(&:to_i)
-  end
 end
 
 class String
   def is_i?
     /\A[-+]?\d+\z/ === self
+  end
+
+  def extract_nums
+    scan(/[-+]?\d+/).map(&:to_i)
   end
 end
 

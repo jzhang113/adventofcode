@@ -16,7 +16,7 @@ class Solution < BaseSolution
     @beacons = Set.new
 
     input.each do |line|
-      sensor_x, sensor_y, beacon_x, beacon_y = extract_num(line)
+      sensor_x, sensor_y, beacon_x, beacon_y = line.extract_nums
       dist = manhattan_dist(sensor_x, sensor_y, beacon_x, beacon_y)
 
       @map[[sensor_x, sensor_y]] = dist

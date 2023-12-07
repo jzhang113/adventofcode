@@ -7,8 +7,8 @@ class Solution < BaseSolution
   include Input
 
   def part1
-    times = extract_num(input[0])
-    dists = extract_num(input[1])
+    times = input[0].extract_nums
+    dists = input[1].extract_nums
 
     times.zip(dists)
       .map { |time, dist| winning_ways(time, dist) }
@@ -16,8 +16,8 @@ class Solution < BaseSolution
   end
 
   def part2
-    time = extract_num(input[0]).map(&:to_s).reduce(&:concat).to_i
-    dist = extract_num(input[1]).map(&:to_s).reduce(&:concat).to_i
+    time = input[0].extract_nums.map(&:to_s).reduce(&:concat).to_i
+    dist = input[1].extract_nums.map(&:to_s).reduce(&:concat).to_i
 
     winning_ways(time, dist)
   end
